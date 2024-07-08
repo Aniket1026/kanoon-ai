@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Body, HTTPException,Request
+from fastapi import APIRouter, HTTPException,Request
+from fastapi.responses import StreamingResponse
 from app.core.settings import settings
 from app.services.document_service import DocumentService
 from app.services.chroma_service import ChromaService
@@ -25,8 +26,12 @@ async def ask_question(request: Request):
         print("DOCS : ",docs)
         context = " ".join([doc.page_content for doc in docs])
         print("CONTEXT : ",context)
-        response = llm_service.generate_response(context, query)
-        return {"response": response}
+        async def generate():
+            async for token in llm_service.generate_stream(context, query):
+                yield f"data: {token}\n\n"
+            yield "data: [DONE]\n\n"
+
+        return StreamingResponse(generate(), media_type="text/event-stream")
     except Exception as e:
         logging.error("Error in ask-question: %s", str(e))
         raise HTTPException(status_code=500, detail=str(e))    

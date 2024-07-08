@@ -1,8 +1,8 @@
 fastapi
 uvicorn
-langchain
-langchain-chroma
-langchain-community
-sentence-transformers
+langchain==0.2.0
+langchain-chroma 
+langchain-community==0.2.0
+sentence-transformers==2.4.0
 python-dotenv
 langchain-google-genai
