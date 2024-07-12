@@ -2,25 +2,17 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useStreamingResponse } from "@/hooks/useStreaming";
 
 export default function QuestionForm() {
   const [query, setQuery] = useState("");
-  const [response, setResponse] = useState("");
+  // const [response, setResponse] = useState("");
+  const { response, isLoading, error, streamResponse } = useStreamingResponse()
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-      const res = await fetch("http://localhost:8000/api/v1/ask-question", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: query,
-    });
-    //    console.log(JSON.stringify({ query }))
-      const data = await res.json();
-    //   console.log(data)
-    setResponse(data.response);
+  const handleSubmit = async (e : React.FormEvent) => {
+    e.preventDefault();
+    await streamResponse(query);
+    console.log('Executed');
   };
 
   return (
