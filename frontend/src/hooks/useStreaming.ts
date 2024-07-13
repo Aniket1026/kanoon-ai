@@ -24,6 +24,7 @@ export const useStreamingResponse = () => {
       const reader = res.body?.getReader();
       if (!reader) throw new Error("Failed to get reader from response body");
       const decoder = new TextDecoder();
+      setIsLoading(false);
 
       while (true) {
         const { done, value } = await reader?.read();
@@ -40,8 +41,6 @@ export const useStreamingResponse = () => {
       }
     } catch (err) {
       setError(err.message);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
