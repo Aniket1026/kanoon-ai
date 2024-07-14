@@ -6,3 +6,4 @@ langchain-community==0.2.0
 sentence-transformers==2.4.0
 python-dotenv
 langchain-google-genai
+pypdf==4.2.0
