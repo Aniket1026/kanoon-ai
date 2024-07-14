@@ -39,7 +39,8 @@ export const useStreamingResponse = () => {
           setResponse((prev) => prev + parsedLine + " ");
         }
       }
-    } catch (err) {
+    } catch (err: any) {
+      setIsLoading(false);
       setError(err.message);
     }
   }, []);
