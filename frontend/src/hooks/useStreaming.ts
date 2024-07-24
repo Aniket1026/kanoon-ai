@@ -25,20 +25,20 @@ export const useStreamingResponse = () => {
       if (!reader) throw new Error("Failed to get reader from response body");
       const decoder = new TextDecoder();
       setIsLoading(false);
-
       while (true) {
         const { done, value } = await reader?.read();
         if (done) break;
         const chunk = decoder.decode(value);
         const lines = chunk.split("\n");
         const parsedLines = lines
-          .map((line) => line.replace(/^data: /, "").trim())
-          .filter((line) => line !== "" && line !== "[DONE]");
-
+        .map((line) => line.replace(/^data: /, "").trim())
+        .filter((line) => line !== "" && line !== "[DONE]");
+        
         for (const parsedLine of parsedLines) {
           setResponse((prev) => prev + parsedLine + " ");
         }
       }
+
     } catch (err: any) {
       setIsLoading(false);
       setError(err.message);
