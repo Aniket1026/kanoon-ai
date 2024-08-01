@@ -7,3 +7,4 @@ sentence-transformers==2.4.0
 python-dotenv
 langchain-google-genai
 pypdf==4.2.0
+SQLAlchemy==2.0.31
