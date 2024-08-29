@@ -8,3 +8,5 @@ python-dotenv
 langchain-google-genai
 pypdf==4.2.0
 SQLAlchemy==2.0.31
+python-jose==3.3.0
+psycopg2==2.9.9
