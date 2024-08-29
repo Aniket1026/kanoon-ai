@@ -1,9 +1,7 @@
 from pydantic import BaseModel , EmailStr
 from datetime import datetime
-# from typing import List, Optional
 
 class UserBase(BaseModel):
-    username: str
     email: EmailStr
 
 class UserCreate(UserBase):
@@ -16,3 +14,15 @@ class UserResponse(UserBase):
 
     class Config:
         orm_mode = True
+    
+class UserSignin(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserSigninResponse(BaseModel):
+    user: UserResponse
+    message: str
+    media_type: str
+
+class UserSignUp(UserResponse):
+    message: str
