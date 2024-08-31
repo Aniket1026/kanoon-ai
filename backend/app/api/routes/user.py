@@ -74,3 +74,16 @@ async def ask_question(
     #  after the response is generated completely
     #  i used a collect_response function to wait for the response to be generated completely
     #  before storing it in the database
+
+
+@user_router.get("/get-chat-history")
+async def get_chat_history(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(SessionManager.get_current_user),
+):
+    try:
+        queries = db.query(Query).filter(Query.user_id == current_user.id).all()
+        return queries
+    except Exception as e:
+        logging.error("Error in get-chat-history: %s", str(e))
+        raise HTTPException(status_code=500, detail=str(e))
