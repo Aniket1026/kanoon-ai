@@ -1,12 +1,54 @@
-import { Button } from '@/components/ui/button';
-import QuestionForm from '../components/QuestionForm';
+'use client'
 
-export default function HomePage() {
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+
+const SignInPage = () => {
+
+    const router = useRouter();
+
+    const handleSignIn = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('signin');
+    }
+
+    const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => router.push('/sign-up');
+
     return (
-        <div className="p-4 flex flex-col items-center justify-between  min-w-full">
-            <h1 className="text-2xl mb-4 font-light text-slate-400">Welcome to Kanoon AI</h1>
-            <QuestionForm />
+        <div className="flex flex-col items-center justify-center h-full bg-black text-white w-full">
+            <form className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-sm w-full flex flex-col justify-between h-3/5"
+                onSubmit={(e: React.FormEvent) => handleSignIn(e)}
+            >
+                <h1 className="text-3xl font-semibold text-center mb-6">Kanoon AI</h1>
+                <Input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none text-white"
+                />
+                <Input
+                    type="password"
+                    placeholder="Password"
+                    className="w-full p-2 mb-6 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-white placeholder-gray-400"
+                />
+                <Button
+                    type="submit"
+                    className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                    Sign In
+                </Button>
+            </form>
+            <div className="mt-4 text-center">
+                <p className="text-gray-400">Don't have an account?</p>
+                <Button
+                    onClick={handleSignUp}
+                    className="mt-2 py-2 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                >
+                    Sign Up
+                </Button>
+            </div>
         </div>
     );
-}
+};
 
+export default SignInPage;
