@@ -32,13 +32,14 @@ async def sign_up(user: UserCreate, db: Session = Depends(get_db)) -> UserSignUp
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/login")
-async def login(user: UserCreate, db: Session = Depends(get_db)) -> UserSigninResponse:
+@router.post("/sign-in")
+async def sign_in(user: UserCreate, db: Session = Depends(get_db)) -> UserSigninResponse:
     try:
         existing_user = db.query(User).filter(User.email == user.email).first()
-        if not existing_user or not Security.verify_password(
-            user.password, existing_user.hashed_password
-        ):
+        if not existing_user:
+            raise HTTPException(status_code=400, detail="Incorrect email or password")
+
+        if not Security.verify_password(user.password, existing_user.hashed_password):
             raise HTTPException(status_code=400, detail="Incorrect email or password")
 
         token = SessionManager.create_session_token(existing_user.id)
@@ -51,16 +52,23 @@ async def login(user: UserCreate, db: Session = Depends(get_db)) -> UserSigninRe
         }
 
         content = json.dumps({"user": user_data, "message": "Login successfully"})
-
         response = Response(content=content, media_type="application/json")
         response.set_cookie(
-            key="session_token", value=token, httponly=True, secure=True
+            key="session_token",
+            value=token,
+            httponly=True,
+            secure=True,
+            samesite="None",
         )
 
         return response
+
+    except HTTPException as e:
+        raise e 
+
     except Exception as e:
         logging.error("Error in login: %s", str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @router.get("/logout")

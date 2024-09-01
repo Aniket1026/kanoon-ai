@@ -75,7 +75,6 @@ async def ask_question(
     #  i used a collect_response function to wait for the response to be generated completely
     #  before storing it in the database
 
-
 @user_router.get("/get-chat-history")
 async def get_chat_history(
     db: Session = Depends(get_db),
