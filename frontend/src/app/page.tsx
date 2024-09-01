@@ -3,14 +3,33 @@
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import axios from 'axios';
 
 const SignInPage = () => {
 
     const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSignIn = (e: React.FormEvent) => {
+    const handleSignIn = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('signin');
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_URL!}/sign-in`, { email, password }, { withCredentials: true });
+            console.log(response);
+            console.log('signin');
+            console.log(response.data);
+            if (response.status === 200) router.push('/chat');
+            if (response.status !== 200) setError(response.data.detail);
+        } catch (error : any) {
+            console.error(error);
+            if (error.response) {
+                setError(error.response.data.detail || 'An error occurred');
+            } else {
+                setError('An unexpected error occurred. Please try again.');
+            }
+        }
     }
 
     const handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => router.push('/sign-up');
@@ -25,11 +44,13 @@ const SignInPage = () => {
                     type="email"
                     placeholder="Email"
                     className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none text-white"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 />
                 <Input
                     type="password"
                     placeholder="Password"
                     className="w-full p-2 mb-6 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-white placeholder-gray-400"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
                 <Button
                     type="submit"
@@ -47,6 +68,7 @@ const SignInPage = () => {
                     Sign Up
                 </Button>
             </div>
+            <p className="mt-4 text-red-500">{error}</p>
         </div>
     );
 };
