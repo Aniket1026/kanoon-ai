@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import QuestionForm from '../../components/QuestionForm';
 import axios from 'axios';
 import { ArrowDownCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface ChatHistory {
     id: number;
@@ -60,10 +61,20 @@ export default function HomePage() {
         }
     };
 
+    const handleLogout = async () => {
+        try {
+            await axios.get(`${process.env.NEXT_PUBLIC_URL!}/logout`, { withCredentials: true });
+            window.location.href = '/';
+        } catch (error: any) {
+            console.error("Error logging out", error.message);
+        }
+    }
+
     return (
         <div className="flex flex-col h-screen bg-gray-100 w-full">
-            <header className="bg-white shadow-sm p-4">
+            <header className="bg-white shadow-sm p-4 flex flex-row justify-between">
                 <h1 className="text-2xl font-semibold text-gray-800">Kanoon AI</h1>
+                <Button onClick={handleLogout}>Logout</Button>
             </header>
 
             <main className="flex-grow overflow-hidden flex flex-col">
