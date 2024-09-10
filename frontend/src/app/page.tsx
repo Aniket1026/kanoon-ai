@@ -21,7 +21,6 @@ const SignInPage = () => {
             console.log('signin');
             console.log(response.data);
             if (response.status === 200) router.push('/chat');
-            if (response.status !== 200) setError(response.data.detail);
         } catch (error : any) {
             console.error(error);
             if (error.response) {

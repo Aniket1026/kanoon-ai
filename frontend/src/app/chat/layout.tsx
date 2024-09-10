@@ -11,8 +11,7 @@ const roboto = Roboto({
 
 export default function ChatLayout({ children }: { children: ReactNode }) {
     return (
-        <div className={`flex flex-col justify-center items-center h-screen ${roboto.className}`}>
-            <Header />
+        <div className={`flex flex-col justify-center items-center h-screen w-full ${roboto.className}`}>
             <main className="w-full flex flex-grow">
                 {children}
             </main>

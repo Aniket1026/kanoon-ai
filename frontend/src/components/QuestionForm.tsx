@@ -23,9 +23,9 @@ const dummyQuestions = [
 ];
 
 
-export default function QuestionForm() {
+export default function QuestionForm({ showCustomQuestion }: { showCustomQuestion: boolean }) {
   const [query, setQuery] = useState("");
-  const [showCustomQuestion, setShowCustomQuestion] = useState(true);
+  const [CustomQuestion, setCustomQuestion] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [isStreaming, setIsStreaming] = useState(false);
   const { response, isLoading, error, streamResponse } = useStreamingResponse()
@@ -33,14 +33,14 @@ export default function QuestionForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setQuery("");
-    setShowCustomQuestion(false);
+    setCustomQuestion(false);
     setCurrentQuestion(query);
     setIsStreaming(true);
     await streamResponse(query);
   };
 
   const handleCardClick = async (question: string) => {
-    setShowCustomQuestion(false);
+    setCustomQuestion(false);
     setCurrentQuestion(question);
     setIsStreaming(true);
     await streamResponse(question);
@@ -56,7 +56,7 @@ export default function QuestionForm() {
   return (
     <div className="flex flex-col h-full w-full">
       <div className="flex-grow overflow-y-auto p-4 pb-24">
-        {showCustomQuestion && (
+        {CustomQuestion && showCustomQuestion && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             {dummyQuestions.map((q, index) => (
               <QuestionCard
