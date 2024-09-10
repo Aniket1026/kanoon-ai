@@ -11,12 +11,13 @@ export const useStreamingResponse = () => {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:8000/api/v1/ask-question", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_URL!}/ask-question`, {
         method: "POST",
         headers: {
           "Content-Type": "text/event-stream",
         },
         body: query,
+        credentials: "include",
       });
 
       if (!res.ok) throw new Error("Network response was not ok");
