@@ -1,16 +1,25 @@
 'use client'
 
+import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const SignUpPage = () => {
 
     const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
 
     const handlesignup = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('signup');
+        try {
+            axios.post(`${process.env.NEXT_PUBLIC_URL!}/sign-up`, { email, password }, { withCredentials: true });
+        } catch (error) {
+            
+        }
     }
 
     const handleSignIn = (e: React.MouseEvent<HTMLButtonElement>) => router.push('/');

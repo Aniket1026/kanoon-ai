@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useStreamingResponse } from "@/hooks/useStreaming";
-import ReactMarkdown from 'react-markdown';
+// import { useStreamingResponse } from "@/hooks/useStreaming";
+// import ReactMarkdown from 'react-markdown';
 import QuestionCard from "./QuestionCard";
-import SkeletonLoader from "./SkeletonLoader";
+// import SkeletonLoader from "./SkeletonLoader";
 
 const dummyQuestions = [
   {
@@ -22,13 +22,22 @@ const dummyQuestions = [
   },
 ];
 
+interface QuestionForm { 
+  showCustomQuestion: boolean, 
+  setCurrentQuestion: any, 
+  setIsStreaming: any, 
+  isStreaming: boolean,
+  streamResponse: any, 
+  response: string 
+}
 
-export default function QuestionForm({ showCustomQuestion }: { showCustomQuestion: boolean }) {
+
+export default function QuestionForm({ showCustomQuestion, setCurrentQuestion, setIsStreaming,isStreaming, streamResponse,response }: QuestionForm) {
   const [query, setQuery] = useState("");
   const [CustomQuestion, setCustomQuestion] = useState(true);
-  const [currentQuestion, setCurrentQuestion] = useState("");
-  const [isStreaming, setIsStreaming] = useState(false);
-  const { response, isLoading, error, streamResponse } = useStreamingResponse()
+  // const [currentQuestion, setCurrentQuestion] = useState("");
+  // const [isStreaming, setIsStreaming] = useState(false);
+  // const { response, isLoading, error, streamResponse } = useStreamingResponse()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +46,7 @@ export default function QuestionForm({ showCustomQuestion }: { showCustomQuestio
     setCurrentQuestion(query);
     setIsStreaming(true);
     await streamResponse(query);
+    console.log("Form submitted: ");
   };
 
   const handleCardClick = async (question: string) => {
@@ -44,7 +54,7 @@ export default function QuestionForm({ showCustomQuestion }: { showCustomQuestio
     setCurrentQuestion(question);
     setIsStreaming(true);
     await streamResponse(question);
-    console.log("Question: ", currentQuestion);
+    // console.log("Question: ", currentQuestion);
   }
 
   useEffect(() => {
@@ -54,7 +64,7 @@ export default function QuestionForm({ showCustomQuestion }: { showCustomQuestio
   }, [response]);
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col w-full">
       <div className="flex-grow overflow-y-auto p-4 pb-24">
         {CustomQuestion && showCustomQuestion && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -69,7 +79,7 @@ export default function QuestionForm({ showCustomQuestion }: { showCustomQuestio
           </div>
         )}
 
-        {error && <p className="mt-2 text-red-600">Error: {error}</p>}
+        {/* {error && <p className="mt-2 text-red-600">Error: {error}</p>}
         {currentQuestion && (
           <div className="mt-4 p-4 w-full bg-white rounded-lg shadow overflow-y-auto">
             <div className="rounded-lg w-full p-5 flex flex-row justify-end">
@@ -81,7 +91,7 @@ export default function QuestionForm({ showCustomQuestion }: { showCustomQuestio
           </div>
         )}
 
-        {isStreaming && <SkeletonLoader />}
+        {isStreaming && <SkeletonLoader />} */}
 
         <form onSubmit={handleSubmit} className="flex w-full mt-4 p-6 fixed bottom-5 left-5 ">
           <input
