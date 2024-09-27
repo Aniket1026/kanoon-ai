@@ -23,6 +23,3 @@ class UserSigninResponse(BaseModel):
     user: UserResponse
     message: str
     media_type: str
-
-class UserSignUp(UserResponse):
-    message: str

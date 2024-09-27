@@ -5,7 +5,7 @@ from app.db.database import get_db
 from app.models.user import User
 from app.core.security import Security
 from app.db.session_manager import SessionManager
-from app.schemas.user import UserSigninResponse, UserSignUp
+from app.schemas.user import UserSigninResponse
 
 import logging
 import json
@@ -14,7 +14,7 @@ router = APIRouter()
 
 
 @router.post("/sign-up")
-async def sign_up(user: UserCreate, db: Session = Depends(get_db)) -> UserSignUp:
+async def sign_up(user: UserCreate, db: Session = Depends(get_db)) -> dict[str, str]:
     try:
         existing_user = db.query(User).filter(User.email == user.email).first()
         if existing_user:
@@ -26,14 +26,16 @@ async def sign_up(user: UserCreate, db: Session = Depends(get_db)) -> UserSignUp
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        return {"user": new_user, "message": "Sign up successfully"}
+        return {"message": "Sign up successfully"}
     except Exception as e:
         logging.error("Error in sign-up: %s", str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.post("/sign-in")
-async def sign_in(user: UserCreate, db: Session = Depends(get_db)) -> UserSigninResponse:
+async def sign_in(
+    user: UserCreate, db: Session = Depends(get_db)
+) -> UserSigninResponse:
     try:
         existing_user = db.query(User).filter(User.email == user.email).first()
         if not existing_user:
@@ -64,7 +66,7 @@ async def sign_in(user: UserCreate, db: Session = Depends(get_db)) -> UserSignin
         return response
 
     except HTTPException as e:
-        raise e 
+        raise e
 
     except Exception as e:
         logging.error("Error in login: %s", str(e))
