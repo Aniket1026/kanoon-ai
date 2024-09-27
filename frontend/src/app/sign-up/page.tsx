@@ -11,14 +11,14 @@ const SignUpPage = () => {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
 
     const handlesignup = (e: React.FormEvent) => {
         e.preventDefault();
         try {
             axios.post(`${process.env.NEXT_PUBLIC_URL!}/sign-up`, { email, password }, { withCredentials: true });
-        } catch (error) {
-            
+            router.push('/');
+        } catch (error : any) {
+            console.error('Error in user sign up ',error.message);
         }
     }
 
@@ -31,23 +31,20 @@ const SignUpPage = () => {
             >
                 <h1 className="text-3xl font-semibold text-center mb-6">Kanoon AI</h1>
                 <Input
-                    type="text"
-                    placeholder="Name"
-                    className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-white placeholder-gray-400"
-                />
-                <Input
                     type="email"
                     placeholder="Email"
                     className="w-full p-2 mb-4 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none text-white"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 />
                 <Input
                     type="password"
                     placeholder="Password"
                     className="w-full p-2 mb-6 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 text-white placeholder-gray-400"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 />
                 <Button
                     type="submit"
-                    className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="w-full py-2 px-4 bg-blue-700 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                     Sign Up
                 </Button>
