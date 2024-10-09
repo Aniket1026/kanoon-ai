@@ -1,6 +1,6 @@
 # Kanoon AI
 
-Kanoon AI is an intelligent legal assistant trained on the Indian Law. It leverages advanced AI models and a robust backend to provide users with accurate and comprehensive answers to queries related to the Basic Indian Law.
+Kanoon AI is an intelligent legal assistant on the Indian Law. It leverages advanced AI models and a robust backend to provide users with accurate and comprehensive answers to queries related to the Basic Indian Law.
 
 ## Table of Contents
 
