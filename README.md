@@ -36,3 +36,8 @@ The architecture of Kanoon AI is designed to be modular and scalable, adhering t
 3. **Database:** Chroma DB is used for storing and retrieving embeddings of the documents.
 4. **Machine Learning:** Utilizes Google Generative AI for generating responses based on retrieved context.
 5. **Document Processing:** Documents are loaded and split using PyPDFLoader and text splitters, with embeddings generated using Sentence Transformers.
+
+## Demo
+
+
+https://github.com/user-attachments/assets/19f7cfaf-8627-4176-b41c-65a2544587e5
